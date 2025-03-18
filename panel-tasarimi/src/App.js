@@ -10,7 +10,23 @@ function App() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImage(reader.result);
+        const img = new Image();
+        img.src = reader.result;
+
+        img.onload = () => {
+          const width = img.naturalWidth;
+          const height = img.naturalHeight;
+
+          // 1080p veya 4K kontrolü
+          if (
+            (width === 1920 && height === 1080) || // 1080p
+            (width === 3840 && height === 2160)    // 4K
+          ) {
+            setImage(reader.result); // Resmi state'e kaydet
+          } else {
+            alert("Lütfen 1920x1080 (1080p) veya 3840x2160 (4K) çözünürlükte bir resim yükleyin.");
+          }
+        };
       };
       reader.readAsDataURL(file);
     }
@@ -21,7 +37,23 @@ function App() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setVideo(reader.result);
+        const video = document.createElement('video');
+        video.src = reader.result;
+
+        video.onloadedmetadata = () => {
+          const width = video.videoWidth;
+          const height = video.videoHeight;
+
+          // 1080p veya 4K kontrolü
+          if (
+            (width === 1920 && height === 1080) || // 1080p
+            (width === 3840 && height === 2160)    // 4K
+          ) {
+            setVideo(reader.result); // Videoyu state'e kaydet
+          } else {
+            alert("Lütfen 1920x1080 (1080p) veya 3840x2160 (4K) çözünürlükte bir video yükleyin.");
+          }
+        };
       };
       reader.readAsDataURL(file);
     }
@@ -67,4 +99,3 @@ function App() {
 }
 
 export default App;
-
